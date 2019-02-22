@@ -1,11 +1,14 @@
-package psy.krupesh.lalu.grupee.Activities;
+package psy.krupesh.lalu.grupee.Fragments;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
@@ -14,36 +17,41 @@ import psy.krupesh.lalu.grupee.Model.Dog;
 import psy.krupesh.lalu.grupee.R;
 import psy.krupesh.lalu.grupee.Recycler.MyAdapter;
 
-public class RecyclerMainActivity extends AppCompatActivity {
+
+public class Fragment2 extends Fragment {
+
 
     ArrayList<Dog> dogs=new ArrayList<>();
     RecyclerView rv;
     MyAdapter adapter;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.recyler_activity_main);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
 
+        View view = inflater.inflate(R.layout.fragment2, container, false);
         //RECYCLERVIEW
-        rv= (RecyclerView) findViewById(R.id.myRecyclerID);
-        rv.setLayoutManager(new LinearLayoutManager(this));
+        rv= (RecyclerView) view.findViewById(R.id.myRecyclerID);
+        rv.setLayoutManager(new LinearLayoutManager(view.getContext()));
         rv.setItemAnimator(new DefaultItemAnimator());
 
         //ADAPTER
-        adapter=new MyAdapter(this,dogs);
+        adapter=new MyAdapter(view.getContext(),dogs);
 
         retrieve();
 
+        return view;
     }
+
+
 
 
 
     private void retrieve()
     {
         dogs.clear();
-        DBAdapter db=new DBAdapter(this);
+        DBAdapter db=new DBAdapter(getContext());
         db.openDB();
         Cursor c=db.getDogs();
         while (c.moveToNext())
@@ -65,5 +73,6 @@ public class RecyclerMainActivity extends AppCompatActivity {
 
         db.closeDB();
     }
+
 
 }
